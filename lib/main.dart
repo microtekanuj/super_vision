@@ -21,9 +21,11 @@ Future<void> main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      home: TakePictureScreen(
-        // Pass the appropriate camera to the TakePictureScreen widget.
-        camera: firstCamera,
+      home: SafeArea(
+        child: TakePictureScreen(
+          // Pass the appropriate camera to the TakePictureScreen widget.
+          camera: firstCamera,
+        ),
       ),
     ),
   );
@@ -55,7 +57,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // Get a specific camera from the list of available cameras.
       widget.camera,
       // Define the resolution to use.
-      ResolutionPreset.ultraHigh,
+      ResolutionPreset.medium,
     );
 
     // Next, initialize the controller. This returns a Future.
@@ -72,7 +74,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Take a picture')),
+      appBar: AppBar(title: Text('Super Vision')),
       // Wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner
       // until the controller has finished initializing.
