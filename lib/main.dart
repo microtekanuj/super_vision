@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
@@ -119,6 +121,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 builder: (context) => DisplayPictureScreen(imagePath: path),
               ),
             );
+
           } catch (e) {
             // If an error occurs, log the error to the console.
             print(e);
@@ -142,9 +145,21 @@ class DisplayPictureScreen extends StatelessWidget {
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
       body: Column(children: <Widget>[
-        Image.file(File(imagePath)),
-        Text("From Backend")
-      ]),
+        Image.file(File(imagePath)),SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+        Text("From Backend",style: TextStyle(fontSize: 20,color: Colors.red),)
+      ]),bottomNavigationBar: FloatingActionButton(child: Icon(Icons.save),onPressed: () {
+        GallerySaver.saveImage(imagePath);
+        _takePhoto();
+    }),
     );
   }
+}
+
+void _takePhoto() async {
+  ImagePicker.pickImage(source: ImageSource.camera).then((File recordedImage) {
+    if (recordedImage != null && recordedImage.path != null) {
+      GallerySaver.saveImage(recordedImage.path).then((path) {
+      });
+    }
+  });
 }
